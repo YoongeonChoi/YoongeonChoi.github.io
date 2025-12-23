@@ -1,0 +1,38 @@
+# Site Settings
+title: Yoongeon Choi
+description: 컴퓨터 공학을 전공하는 개발자의 포트폴리오 사이트
+author: Yoongeon Choi
+url: "https://yoongeonchoi.github.io"
+baseurl: ""
+
+# Theme colors
+primary_color: "#B0A6DF"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+
+# Plugins
+plugins:
+  - jekyll-seo-tag
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - vendor
+
+# Collections for posts
+collections:
+  posts:
+    output: true
+    permalink: /posts/:title/
+
+# Default front matter
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"

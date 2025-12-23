@@ -1,0 +1,112 @@
+---
+layout: default
+title: Yoongeon Choi
+description: 컴퓨터 공학을 전공하는 개발자의 포트폴리오
+---
+
+<div class="slider-container" id="sliderContainer">
+    <!-- PR 페이지 (좌측) -->
+    <section class="slide slide-portfolio" id="portfolioSlide">
+        <div class="slide-content">
+            <h1 class="section-title">Portfolio</h1>
+            <p class="section-subtitle">프로젝트 & 경험</p>
+
+            <div class="portfolio-grid">
+                <div class="portfolio-card">
+                    <div class="card-icon">💻</div>
+                    <h3>프로젝트</h3>
+                    <p>다양한 개발 프로젝트들을 확인해보세요</p>
+                </div>
+                <div class="portfolio-card">
+                    <div class="card-icon">🎓</div>
+                    <h3>교육</h3>
+                    <p>컴퓨터 공학 전공</p>
+                </div>
+                <div class="portfolio-card">
+                    <div class="card-icon">🛠️</div>
+                    <h3>기술 스택</h3>
+                    <p>사용하는 기술과 도구들</p>
+                </div>
+            </div>
+
+            <!-- 메인으로 돌아가기 화살표 -->
+            <div class="nav-hint nav-hint-right" onclick="goToSlide(1)">
+                <span class="arrow-icon">→</span>
+                <span class="nav-text">Main</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 메인 페이지 (중앙) -->
+    <section class="slide slide-main" id="mainSlide">
+        <div class="slide-content main-content">
+            <!-- 좌측 네비게이션 영역 -->
+            <div class="nav-area nav-left" id="navLeft">
+                <div class="nav-arrow">
+                    <span class="arrow-icon">←</span>
+                    <span class="nav-label">Portfolio</span>
+                </div>
+            </div>
+
+            <!-- 이름 -->
+            <div class="name-container">
+                <h1 class="main-name" id="mainName">
+                    <span class="name-text">Yoongeon Choi</span>
+                </h1>
+                <p class="main-subtitle">Computer Science Student</p>
+            </div>
+
+            <!-- 우측 네비게이션 영역 -->
+            <div class="nav-area nav-right" id="navRight">
+                <div class="nav-arrow">
+                    <span class="nav-label">Blog</span>
+                    <span class="arrow-icon">→</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 스크롤 인디케이터 -->
+        <div class="scroll-indicator">
+            <span>← 좌우로 슬라이드 →</span>
+        </div>
+    </section>
+
+    <!-- 투고 글 페이지 (우측) -->
+    <section class="slide slide-blog" id="blogSlide">
+        <div class="slide-content">
+            <h1 class="section-title">Blog</h1>
+            <p class="section-subtitle">생각과 글</p>
+
+            <div class="blog-posts">
+                {% for post in site.posts limit:5 %}
+                <article class="blog-post-card">
+                    <time class="post-date">{{ post.date | date: "%Y.%m.%d" }}</time>
+                    <h3 class="post-title">{{ post.title }}</h3>
+                    <p class="post-excerpt">{{ post.excerpt | strip_html | truncate: 100 }}</p>
+                </article>
+                {% endfor %}
+
+                {% if site.posts.size == 0 %}
+                <div class="empty-state">
+                    <div class="empty-icon">✍️</div>
+                    <p>아직 작성된 글이 없습니다</p>
+                    <p class="empty-hint">곧 새로운 글이 올라올 예정입니다</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- 메인으로 돌아가기 화살표 -->
+            <div class="nav-hint nav-hint-left" onclick="goToSlide(1)">
+                <span class="arrow-icon">←</span>
+                <span class="nav-text">Main</span>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- 슬라이드 인디케이터 -->
+<div class="slide-indicators">
+    <span class="indicator" data-slide="0"></span>
+    <span class="indicator active" data-slide="1"></span>
+    <span class="indicator" data-slide="2"></span>
+</div>
