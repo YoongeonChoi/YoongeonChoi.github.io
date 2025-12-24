@@ -12,17 +12,18 @@ description: 컴퓨터 공학을 전공하는 개발자의 포트폴리오
             <p class="section-subtitle">프로젝트 & 경험</p>
 
             <div class="portfolio-grid">
-                <div class="portfolio-card">
+                <a href="https://github.com/YoongeonChoi" target="_blank" rel="noopener noreferrer"
+                    class="portfolio-card">
                     <div class="card-icon">💻</div>
                     <h3>프로젝트</h3>
                     <p>다양한 개발 프로젝트들을 확인해보세요</p>
-                </div>
-                <div class="portfolio-card">
+                </a>
+                <div class="portfolio-card" onclick="openModal('educationModal')">
                     <div class="card-icon">🎓</div>
                     <h3>교육</h3>
                     <p>컴퓨터 공학 전공</p>
                 </div>
-                <div class="portfolio-card">
+                <div class="portfolio-card" onclick="openModal('skillsModal')">
                     <div class="card-icon">🛠️</div>
                     <h3>기술 스택</h3>
                     <p>사용하는 기술과 도구들</p>
@@ -109,4 +110,98 @@ description: 컴퓨터 공학을 전공하는 개발자의 포트폴리오
     <span class="indicator" data-slide="0"></span>
     <span class="indicator active" data-slide="1"></span>
     <span class="indicator" data-slide="2"></span>
+</div>
+
+<!-- 교육 모달 -->
+<div class="modal" id="educationModal">
+    <div class="modal-overlay" onclick="closeModal('educationModal')"></div>
+    <div class="modal-content education-modal">
+        <button class="modal-close" onclick="closeModal('educationModal')">×</button>
+        <h2 class="modal-title">🎓 교육</h2>
+
+        <div class="timeline">
+            <div class="timeline-line"></div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">2005</span>
+                    <p class="timeline-text">출생</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">2012</span>
+                    <p class="timeline-text">용인신릉초등학교 입학</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">2017</span>
+                    <p class="timeline-text">용인백현초등학교 전학</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">2018</span>
+                    <p class="timeline-text">용인백현중학교 입학</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">2021</span>
+                    <p class="timeline-text">용인백현고등학교 입학</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">2024</span>
+                    <p class="timeline-text">목원대학교 컴퓨터공학과 입학</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 기술 스택 모달 -->
+<div class="modal" id="skillsModal">
+    <div class="modal-overlay" onclick="closeModal('skillsModal')"></div>
+    <div class="modal-content skills-modal">
+        <button class="modal-close" onclick="closeModal('skillsModal')">×</button>
+        <h2 class="modal-title">🛠️ 기술 스택</h2>
+        <p class="skills-subtitle">마우스를 가까이 가져가 보세요!</p>
+
+        <div class="skills-container">
+            <div class="skill-item" data-skill="C">
+                <img src="/assets/images/skills/c.png" alt="C Language" class="skill-icon">
+                <span class="skill-name">C</span>
+            </div>
+            <div class="skill-item" data-skill="C++">
+                <img src="/assets/images/skills/cpp.png" alt="C++" class="skill-icon">
+                <span class="skill-name">C++</span>
+            </div>
+            <div class="skill-item" data-skill="C#">
+                <img src="/assets/images/skills/csharp.png" alt="C#" class="skill-icon">
+                <span class="skill-name">C#</span>
+            </div>
+            <div class="skill-item" data-skill="Java">
+                <img src="/assets/images/skills/java.png" alt="Java" class="skill-icon">
+                <span class="skill-name">Java</span>
+            </div>
+            <div class="skill-item" data-skill="Python">
+                <img src="/assets/images/skills/python.png" alt="Python" class="skill-icon">
+                <span class="skill-name">Python</span>
+            </div>
+        </div>
+    </div>
 </div>

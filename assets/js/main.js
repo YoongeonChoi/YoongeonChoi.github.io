@@ -3,7 +3,7 @@
  * 슬라이드 네비게이션, 터치 스와이프, 키보드 지원
  */
 
-(function() {
+(function () {
   'use strict';
 
   // ========================================
@@ -44,8 +44,8 @@
 
     // Update slider position
     sliderContainer.classList.remove('slide-left', 'slide-center', 'slide-right');
-    
-    switch(index) {
+
+    switch (index) {
       case 0:
         sliderContainer.classList.add('slide-left');
         break;
@@ -96,7 +96,7 @@
     if (navLeft) {
       navLeft.addEventListener('click', goToPrevSlide);
     }
-    
+
     if (navRight) {
       navRight.addEventListener('click', goToNextSlide);
     }
@@ -116,7 +116,7 @@
 
   function handleSwipe() {
     const swipeDistance = touchEndX - touchStartX;
-    
+
     if (Math.abs(swipeDistance) < CONFIG.swipeThreshold) return;
 
     if (swipeDistance > 0) {
@@ -137,7 +137,7 @@
   // Keyboard Navigation
   // ========================================
   function handleKeydown(e) {
-    switch(e.key) {
+    switch (e.key) {
       case 'ArrowLeft':
         goToPrevSlide();
         break;
@@ -158,11 +158,11 @@
   // Mouse Wheel Navigation (optional)
   // ========================================
   let wheelTimeout = null;
-  
+
   function handleWheel(e) {
     // Debounce wheel events
     if (wheelTimeout) return;
-    
+
     wheelTimeout = setTimeout(() => {
       wheelTimeout = null;
     }, 500);
@@ -182,7 +182,7 @@
   }
 
   // ========================================
-  // Name Hover Effect Enhancement
+  // Name Hover Effect Enhancement - Brush Stroke
   // ========================================
   function initNameEffect() {
     const mainName = document.getElementById('mainName');
@@ -191,35 +191,69 @@
     const nameText = mainName.querySelector('.name-text');
     if (!nameText) return;
 
-    // Add character-by-character animation on hover
+    // Add character-by-character for brush stroke effect
     const text = nameText.textContent;
     nameText.innerHTML = '';
-    
+
     [...text].forEach((char, index) => {
       const span = document.createElement('span');
       span.textContent = char === ' ' ? '\u00A0' : char;
       span.style.display = 'inline-block';
-      span.style.transition = `color 0.3s ease ${index * 0.03}s, transform 0.3s ease ${index * 0.03}s`;
+      span.style.transition = 'color 0.2s ease, transform 0.2s ease';
+      span.style.color = '#000000';
+      span.dataset.timeout = '';
       nameText.appendChild(span);
     });
 
-    nameText.addEventListener('mouseenter', () => {
+    // Brush stroke effect - color changes as mouse passes over each character
+    nameText.addEventListener('mousemove', (e) => {
       const chars = nameText.querySelectorAll('span');
+      const rect = nameText.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+
       chars.forEach((char, index) => {
-        setTimeout(() => {
+        const charRect = char.getBoundingClientRect();
+        const charCenterX = charRect.left + charRect.width / 2 - rect.left;
+        const distance = Math.abs(mouseX - charCenterX);
+
+        // If mouse is close to this character
+        if (distance < 30) {
+          // Clear existing timeout
+          if (char.dataset.timeout) {
+            clearTimeout(parseInt(char.dataset.timeout));
+          }
+
+          // Apply brush stroke color
           char.style.color = '#B0A6DF';
           char.style.transform = 'translateY(-2px)';
-        }, index * 30);
+
+          // Set timeout to revert after 2 seconds
+          const timeoutId = setTimeout(() => {
+            char.style.color = '#000000';
+            char.style.transform = 'translateY(0)';
+            char.dataset.timeout = '';
+          }, 2000);
+
+          char.dataset.timeout = timeoutId.toString();
+        }
       });
     });
 
+    // Reset all on mouse leave (after 2 seconds)
     nameText.addEventListener('mouseleave', () => {
       const chars = nameText.querySelectorAll('span');
-      chars.forEach((char, index) => {
-        setTimeout(() => {
-          char.style.color = '';
-          char.style.transform = '';
-        }, index * 20);
+      chars.forEach((char) => {
+        if (char.dataset.timeout) {
+          clearTimeout(parseInt(char.dataset.timeout));
+        }
+
+        const timeoutId = setTimeout(() => {
+          char.style.color = '#000000';
+          char.style.transform = 'translateY(0)';
+          char.dataset.timeout = '';
+        }, 2000);
+
+        char.dataset.timeout = timeoutId.toString();
       });
     });
   }
@@ -234,8 +268,135 @@
     document.addEventListener('mousemove', (e) => {
       const x = (e.clientX / window.innerWidth - 0.5) * 20;
       const y = (e.clientY / window.innerHeight - 0.5) * 20;
-      
+
       mainSlide.style.backgroundPosition = `${50 + x * 0.1}% ${50 + y * 0.1}%`;
+    });
+  }
+
+  // ========================================
+  // Modal Functions
+  // ========================================
+  function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+
+      // Initialize magnetic effect when skills modal opens
+      if (modalId === 'skillsModal') {
+        setTimeout(() => initMagneticEffect(), 100);
+      }
+    }
+  }
+
+  function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  }
+
+  // Close modal on Escape key
+  function initModalKeyboard() {
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal.active').forEach(modal => {
+          modal.classList.remove('active');
+          document.body.style.overflow = '';
+        });
+      }
+    });
+  }
+
+  // ========================================
+  // Magnetic Effect for Skills
+  // ========================================
+  function initMagneticEffect() {
+    const skillItems = document.querySelectorAll('.skill-item');
+
+    skillItems.forEach(item => {
+      const rect = item.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+
+      // Store original position
+      item.dataset.originalX = '0';
+      item.dataset.originalY = '0';
+
+      item.addEventListener('mousemove', (e) => {
+        const itemRect = item.getBoundingClientRect();
+        const itemCenterX = itemRect.left + itemRect.width / 2;
+        const itemCenterY = itemRect.top + itemRect.height / 2;
+
+        // Calculate offset from center
+        const deltaX = e.clientX - itemCenterX;
+        const deltaY = e.clientY - itemCenterY;
+
+        // Apply magnetic pull (move towards mouse)
+        const magnetStrength = 0.3;
+        const translateX = deltaX * magnetStrength;
+        const translateY = deltaY * magnetStrength;
+
+        item.style.transform = `translate(${translateX}px, ${translateY}px)`;
+      });
+
+      item.addEventListener('mouseleave', () => {
+        // Spring back to original position
+        item.style.transform = 'translate(0, 0)';
+      });
+    });
+  }
+
+  // Global magnetic effect when mouse moves near skills container
+  function initSkillsContainerMagnetic() {
+    const skillsModal = document.getElementById('skillsModal');
+    if (!skillsModal) return;
+
+    const container = skillsModal.querySelector('.skills-container');
+    if (!container) return;
+
+    container.addEventListener('mousemove', (e) => {
+      const skillItems = container.querySelectorAll('.skill-item');
+      const containerRect = container.getBoundingClientRect();
+      const mouseX = e.clientX;
+      const mouseY = e.clientY;
+
+      skillItems.forEach(item => {
+        const itemRect = item.getBoundingClientRect();
+        const itemCenterX = itemRect.left + itemRect.width / 2;
+        const itemCenterY = itemRect.top + itemRect.height / 2;
+
+        // Calculate distance from mouse to item center
+        const distance = Math.sqrt(
+          Math.pow(mouseX - itemCenterX, 2) +
+          Math.pow(mouseY - itemCenterY, 2)
+        );
+
+        // Magnetic effect range
+        const magnetRange = 150;
+
+        if (distance < magnetRange && distance > 0) {
+          // Calculate pull strength based on distance
+          const strength = (1 - distance / magnetRange) * 15;
+
+          // Direction towards mouse
+          const dirX = (mouseX - itemCenterX) / distance;
+          const dirY = (mouseY - itemCenterY) / distance;
+
+          const translateX = dirX * strength;
+          const translateY = dirY * strength;
+
+          item.style.transform = `translate(${translateX}px, ${translateY}px)`;
+        }
+      });
+    });
+
+    container.addEventListener('mouseleave', () => {
+      const skillItems = container.querySelectorAll('.skill-item');
+      skillItems.forEach(item => {
+        item.style.transform = 'translate(0, 0)';
+      });
     });
   }
 
@@ -245,7 +406,7 @@
   function init() {
     // Set initial state
     sliderContainer.classList.add('slide-center');
-    
+
     // Initialize all features
     initIndicators();
     initNavAreas();
@@ -254,9 +415,13 @@
     initWheelNav();
     initNameEffect();
     initParallax();
+    initModalKeyboard();
+    initSkillsContainerMagnetic();
 
-    // Expose goToSlide globally for inline onclick handlers
+    // Expose functions globally for inline onclick handlers
     window.goToSlide = goToSlide;
+    window.openModal = openModal;
+    window.closeModal = closeModal;
 
     console.log('🚀 Portfolio site initialized');
   }
