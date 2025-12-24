@@ -297,6 +297,41 @@
     }
   }
 
+  // Open blog modal with post content
+  function openBlogModal(title, date, content) {
+    const titleEl = document.getElementById('blogModalTitle');
+    const dateEl = document.getElementById('blogModalDate');
+    const contentEl = document.getElementById('blogModalContent');
+
+    if (titleEl) titleEl.textContent = title;
+    if (dateEl) dateEl.textContent = date;
+    if (contentEl) {
+      // Decode HTML entities and set content
+      const decodedContent = content
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&amp;/g, '&')
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;/g, "'");
+      contentEl.innerHTML = decodedContent;
+    }
+
+    openModal('blogModal');
+  }
+
+  // Initialize blog card click handlers
+  function initBlogCards() {
+    const blogCards = document.querySelectorAll('.blog-post-card');
+    blogCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const title = card.dataset.title || '';
+        const date = card.dataset.date || '';
+        const content = card.dataset.content || '';
+        openBlogModal(title, date, content);
+      });
+    });
+  }
+
   // Close modal on Escape key
   function initModalKeyboard() {
     document.addEventListener('keydown', (e) => {
@@ -430,11 +465,13 @@
     initParallax();
     initModalKeyboard();
     initSkillsContainerMagnetic();
+    initBlogCards();
 
     // Expose functions globally for inline onclick handlers
     window.goToSlide = goToSlide;
     window.openModal = openModal;
     window.closeModal = closeModal;
+    window.openBlogModal = openBlogModal;
 
     console.log('🚀 Portfolio site initialized');
   }
