@@ -31,7 +31,7 @@ description: 컴퓨터 공학을 전공하는 개발자의 포트폴리오
             </div>
 
             <!-- 메인으로 돌아가기 화살표 -->
-            <div class="nav-hint nav-hint-right" onclick="goToSlide(1)">
+            <div class="nav-hint nav-hint-left" onclick="goToSlide(1)">
                 <span class="arrow-icon">→</span>
                 <span class="nav-text">Main</span>
             </div>
@@ -80,11 +80,11 @@ description: 컴퓨터 공학을 전공하는 개발자의 포트폴리오
 
             <div class="blog-posts">
                 {% for post in site.posts limit:5 %}
-                <article class="blog-post-card">
+                <a href="{{ post.url | relative_url }}" class="blog-post-card">
                     <time class="post-date">{{ post.date | date: "%Y.%m.%d" }}</time>
                     <h3 class="post-title">{{ post.title }}</h3>
                     <p class="post-excerpt">{{ post.excerpt | strip_html | truncate: 100 }}</p>
-                </article>
+                </a>
                 {% endfor %}
 
                 {% if site.posts.size == 0 %}
@@ -97,7 +97,7 @@ description: 컴퓨터 공학을 전공하는 개발자의 포트폴리오
             </div>
 
             <!-- 메인으로 돌아가기 화살표 -->
-            <div class="nav-hint nav-hint-left" onclick="goToSlide(1)">
+            <div class="nav-hint nav-hint-right" onclick="goToSlide(1)">
                 <span class="arrow-icon">←</span>
                 <span class="nav-text">Main</span>
             </div>

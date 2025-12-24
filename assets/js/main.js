@@ -358,7 +358,6 @@
 
     container.addEventListener('mousemove', (e) => {
       const skillItems = container.querySelectorAll('.skill-item');
-      const containerRect = container.getBoundingClientRect();
       const mouseX = e.clientX;
       const mouseY = e.clientY;
 
@@ -374,11 +373,11 @@
         );
 
         // Magnetic effect range
-        const magnetRange = 150;
+        const magnetRange = 200;
 
         if (distance < magnetRange && distance > 0) {
           // Calculate pull strength based on distance
-          const strength = (1 - distance / magnetRange) * 15;
+          const strength = (1 - distance / magnetRange) * 20;
 
           // Direction towards mouse
           const dirX = (mouseX - itemCenterX) / distance;
@@ -387,7 +386,14 @@
           const translateX = dirX * strength;
           const translateY = dirY * strength;
 
-          item.style.transform = `translate(${translateX}px, ${translateY}px)`;
+          // 3D rotation based on mouse position relative to item
+          const rotateX = (mouseY - itemCenterY) / 10;
+          const rotateY = -(mouseX - itemCenterX) / 10;
+
+          item.style.transform = `translate(${translateX}px, ${translateY}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+        } else {
+          // Reset with smooth transition when outside range
+          item.style.transform = 'translate(0, 0) rotateX(0) rotateY(0) scale(1)';
         }
       });
     });
@@ -395,7 +401,14 @@
     container.addEventListener('mouseleave', () => {
       const skillItems = container.querySelectorAll('.skill-item');
       skillItems.forEach(item => {
-        item.style.transform = 'translate(0, 0)';
+        // Spring back with slight delay for each item
+        item.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        item.style.transform = 'translate(0, 0) rotateX(0) rotateY(0) scale(1)';
+
+        // Reset transition after animation
+        setTimeout(() => {
+          item.style.transition = 'transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow var(--transition-fast) ease, border-color var(--transition-fast) ease';
+        }, 500);
       });
     });
   }

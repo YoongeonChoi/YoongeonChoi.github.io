@@ -374,6 +374,12 @@ body {
   line-height: 1.6;
 }
 
+/* Blog post card as link */
+a.blog-post-card {
+  text-decoration: none;
+  display: block;
+}
+
 /* Empty State */
 .empty-state {
   text-align: center;
@@ -656,10 +662,11 @@ body {
   position: relative;
   padding: 2rem 0;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 1rem;
   overflow-x: auto;
+  min-height: 150px;
 }
 
 .timeline-line {
@@ -691,16 +698,19 @@ body {
   border: 4px solid #1a1a2e;
   box-shadow: 0 0 20px rgba(176, 166, 223, 0.5);
   transition: all var(--transition-fast) ease;
-  margin-bottom: 1rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .timeline-item:hover .timeline-dot {
-  transform: scale(1.3);
+  transform: translate(-50%, -50%) scale(1.3);
   box-shadow: 0 0 30px rgba(176, 166, 223, 0.8);
 }
 
 .timeline-content {
-  padding-top: 0.5rem;
+  padding-top: 2.5rem;
 }
 
 .timeline-year {
@@ -738,6 +748,7 @@ body {
   gap: 3rem;
   flex-wrap: wrap;
   padding: 2rem;
+  perspective: 1000px;
 }
 
 .skill-item {
@@ -750,12 +761,80 @@ body {
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
-  transition: transform 0.1s ease, box-shadow var(--transition-fast) ease;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow var(--transition-fast) ease, border-color var(--transition-fast) ease;
   will-change: transform;
+  transform-style: preserve-3d;
+  animation: skillEntrance 0.6s ease-out backwards;
+  position: relative;
+  overflow: hidden;
+}
+
+.skill-item::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(176, 166, 223, 0.3) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.skill-item:hover::before {
+  opacity: 1;
+  animation: glowPulse 1.5s ease-in-out infinite;
+}
+
+.skill-item:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.skill-item:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.skill-item:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.skill-item:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.skill-item:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+@keyframes skillEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) rotateX(-20deg) scale(0.8);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotateX(0) scale(1);
+  }
+}
+
+@keyframes glowPulse {
+
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
 }
 
 .skill-item:hover {
-  box-shadow: 0 20px 40px rgba(176, 166, 223, 0.3);
+  box-shadow: 0 20px 40px rgba(176, 166, 223, 0.4), 0 0 60px rgba(176, 166, 223, 0.2);
   border-color: var(--primary-color);
 }
 
@@ -764,11 +843,12 @@ body {
   height: 80px;
   object-fit: contain;
   filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
-  transition: transform var(--transition-fast) ease;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
 }
 
 .skill-item:hover .skill-icon {
-  transform: scale(1.1);
+  transform: scale(1.15) rotateY(10deg);
+  filter: drop-shadow(0 10px 25px rgba(176, 166, 223, 0.5));
 }
 
 .skill-name {
@@ -777,6 +857,12 @@ body {
   color: white;
   text-transform: uppercase;
   letter-spacing: 0.1em;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.skill-item:hover .skill-name {
+  color: var(--primary-light);
+  text-shadow: 0 0 20px rgba(176, 166, 223, 0.8);
 }
 
 /* Portfolio card as link */
@@ -801,9 +887,10 @@ a.portfolio-card {
 
   .timeline {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
     gap: 0;
-    padding-left: 2rem;
+    padding-left: 3rem;
+    min-height: auto;
   }
 
   .timeline-line {
@@ -821,11 +908,24 @@ a.portfolio-card {
     text-align: left;
     margin-bottom: 2rem;
     min-width: auto;
+    padding-left: 0;
   }
 
   .timeline-dot {
+    position: absolute;
+    left: -2.5rem;
+    top: 50%;
+    transform: translateY(-50%);
     margin-bottom: 0;
-    margin-right: 1.5rem;
+  }
+
+  .timeline-item:hover .timeline-dot {
+    transform: translateY(-50%) scale(1.3);
+  }
+
+  .timeline-content {
+    padding-top: 0;
+    padding-left: 0;
   }
 
   .skills-container {
