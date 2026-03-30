@@ -1,0 +1,203 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #f3efe2;
+  --surface: #fffdf6;
+  --surface-strong: #ebe4d1;
+  --text: #171313;
+  --text-muted: #5b5148;
+  --border: #171313;
+  --accent: #d74216;
+  --accent-foreground: #fff8f2;
+  --danger: #8e1d13;
+  --focus: #111111;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+
+  --radius-soft: 8px;
+  --shadow-hard: 8px 8px 0 0 rgba(23, 19, 19, 1);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-strong: var(--surface-strong);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-danger: var(--danger);
+  --color-focus: var(--focus);
+  --font-sans: var(--font-body);
+  --font-heading: var(--font-heading);
+  --font-mono: var(--font-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  background:
+    linear-gradient(180deg, rgba(255, 253, 246, 0.92), rgba(243, 239, 226, 0.96)),
+    repeating-linear-gradient(
+      90deg,
+      rgba(23, 19, 19, 0.02) 0,
+      rgba(23, 19, 19, 0.02) 1px,
+      transparent 1px,
+      transparent 64px
+    );
+  color: var(--text);
+  font-family: var(--font-body), sans-serif;
+  line-height: 1.5;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: fixed;
+  left: var(--space-4);
+  top: var(--space-4);
+  transform: translateY(-200%);
+  padding: 10px 14px;
+  border: 2px solid var(--border);
+  background: var(--surface);
+  z-index: 999;
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+.site-shell {
+  min-height: 100vh;
+}
+
+.content-grid {
+  width: min(1200px, calc(100vw - 32px));
+  margin-inline: auto;
+}
+
+.prose-width {
+  width: min(68ch, 100%);
+}
+
+.section-frame {
+  border: 2px solid var(--border);
+  background: var(--surface);
+}
+
+.hard-shadow {
+  box-shadow: var(--shadow-hard);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  content: "";
+  width: 24px;
+  height: 2px;
+  background: var(--accent);
+}
+
+.action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 18px;
+  border: 2px solid var(--border);
+  background: var(--accent);
+  color: var(--accent-foreground);
+  font-family: var(--font-heading), sans-serif;
+  font-weight: 700;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+.action-button:hover {
+  transform: translate(-2px, -2px);
+}
+
+.action-button.secondary {
+  background: var(--surface);
+  color: var(--text);
+}
+
+.field {
+  width: 100%;
+  border: 2px solid var(--border);
+  background: #fff;
+  min-height: 52px;
+  padding: 12px 14px;
+}
+
+.field.textarea {
+  min-height: 180px;
+  resize: vertical;
+}
+
+.card-grid {
+  display: grid;
+  gap: 24px;
+}
+
+@media (min-width: 768px) {
+  .card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
